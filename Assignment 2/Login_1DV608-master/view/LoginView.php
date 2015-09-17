@@ -1,4 +1,5 @@
 <?php
+namespace view;
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -20,11 +21,14 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
+
 		$message = '';
-		
+
+		//store username in session ( $_SESSION[LoginView::UserName] = self::name ?) - print in form as page is reloaded
 		$response = $this->generateLoginFormHTML($message);
-		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
+
+
 	}
 
 	/**
@@ -70,6 +74,8 @@ class LoginView {
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
+		return \model\User::getRequestUserName();
+
 		//RETURN REQUEST VARIABLE: USERNAME
 	}
 	
