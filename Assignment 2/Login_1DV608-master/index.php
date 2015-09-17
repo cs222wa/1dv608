@@ -1,4 +1,6 @@
 <?php
+//Starts new session - spara sessionsvariabler i modellen (view - controller - modell)
+session_start();
 
 //INCLUDE THE FILES NEEDED...
 require_once('controller/LoginController.php');
@@ -11,14 +13,24 @@ require_once('model/User.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-//Starts new session
-session_start();
-
 //CREATE OBJECTS OF THE VIEWS
 $v = new \view\LoginView();
 $dtv = new \view\DateTimeView();
 $lv = new \view\LayoutView();
 
+//CREATE OBJECTS OF THE MODEL
+$u = new \model\User("Admin", "supersecret007");
 
+var_dump($u->getRequestUserName());
+//var_dump($v);
+
+//CREATE OBJECT OF THE CONTROLLER - SEND OBJECTS OF LoginVIEW AND User AS PARAMETERS
+$lc = new \controller\LoginController($v, $u);
+
+//CALL CONTROLLER METHOD doLogin IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE WITH THE APPLICATION
+$lc->doLogin();
+
+//RENDER THE LAYOUTVIEW METHOD render IN ORDER TO DISPLAY LOGIN PAGE
 $lv->render(false, $v, $dtv);
+
 

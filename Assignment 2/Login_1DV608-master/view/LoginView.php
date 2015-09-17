@@ -28,7 +28,6 @@ class LoginView {
 		$response = $this->generateLoginFormHTML($message);
 		return $response;
 
-
 	}
 
 	/**
@@ -74,9 +73,27 @@ class LoginView {
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
-		return \model\User::getRequestUserName();
+
+		// Skapa flera liknande get-funktioner som denna för att ta reda på vad användaren gjort/skrivit.
+		//är till för att läsa från post-variablerna
+		//Det är controllern som anropar och frågar efter input på username.
+
+		//get request password/login/logout etc (se överst i dokumentet som har med formuläret att göra.)
 
 		//RETURN REQUEST VARIABLE: USERNAME
 	}
-	
+
+	public function userWantsToLogin(){
+		//Find out if user have clicked the login-button = a login attempt has been made.
+		//If button is clicked - return the information provided in the username and password fields.
+		//If button is not clicked return null.
+	}
+
+	public function userIsLoggedIn(){
+		//find out if the user is already logger in.
+	}
+
+	public function userWantsToLogout(){
+		//find out if an attempt to log out has been made.
+	}
 }
