@@ -22,9 +22,16 @@ class LoginView {
 	 */
 	public function response() {
 
+		/*
+		if($result){
+			$message = 'Login Success!';
+		}
+		else{
+			$message = 'Login failed. Please enter another username and/or password.';
+		}
+		*/
 		$message = '';
 
-		//store username in session ( $_SESSION[LoginView::UserName] = self::name ?) - print in form as page is reloaded
 		$response = $this->generateLoginFormHTML($message);
 		return $response;
 
@@ -85,8 +92,20 @@ class LoginView {
 
 	public function userWantsToLogin(){
 		//Find out if user have clicked the login-button = a login attempt has been made.
-		//If button is clicked - return the information provided in the username and password fields.
-		//If button is not clicked return null.
+		if (isset($_POST[self::$login])){
+
+			//If button is clicked - return the information provided in the username and password fields
+			if(isset($_POST[self::$name]) && isset($_POST[self::$password])){
+
+				$loginUser = array();
+				$loginUser[] = $_POST[self::$name];
+				$loginUser[] = $_POST[self::$password];
+				return $loginUser;
+			}
+		}
+		//If login button is not clicked return false.
+		return false;
+
 	}
 
 	public function userIsLoggedIn(){

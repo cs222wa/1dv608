@@ -6,7 +6,7 @@
         private $loginView;
         private $loginModel;
 
-        public function _construct(\view\LoginView $loginView, \model\User $loginModel){
+        public function __construct(\view\LoginView $loginView, \model\User $loginModel){
             $this->loginView = $loginView;
             $this->loginModel = $loginModel;
         }
@@ -14,15 +14,26 @@
         //METHOD RUNS EVERYTHIME THE PAGE IS RELOADED IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE
         public function doLogin(){
 
-      /*      //IF USER WANTS TO LOGIN INTO THE APPLICATION
+           //IF USER WANTS TO LOGIN INTO THE APPLICATION (BY CLICKING THE LOGIN BUTTON)
             if ($this->loginView->userWantsToLogin()){
-                //send question to method in view to control if the login button has been clicked (if form has been sent).
-                //if button is clicked (not null) - control that information in both Username and Password has been provided.
-                //if not null and form filled out correctly -  send the information provided from the view to the model in order to compare it.
-                //
-                //If the result from the model says all is correct - login user: display login message and send request to view to display logout button.
+                //GET THE LOGIN INFORMATION PROVIDED BY THE USER
+                $loginInfo = $this->loginView->userWantsToLogin();
+                $assignedUsername = $loginInfo[0];
+                $assignedPassword = $loginInfo[1];
+
+                //send login information to User in order to control that both Username and Password has been provided.
+                //and that they match with the information in the system
+                  if($controlUsername = $this->loginModel->getRequestUserName($loginInfo[0])){
+                      if($controlPassword = $this->loginModel->getRequestPassword($loginInfo[1])){
+                          //If the result from the model says all is correct - login user: display new view with login message and send request to view to render logout button.
+
+                          return 'user logged in';
+                      }
+                      //If the result from the model says something is wrong - request the user to enter their information again - provide recently used username in form!
+                    return 'user not logged in';
+                  }
                 //If the result from the model says something is wrong - request the user to enter their information again - provide recently used username in form!
-                //
+                'user not logged in';
             }
             elseif($this->loginView->userIsLoggedIn()){
                 //send question to view if user is already verified and logged in. (ex has the logout button been rendered?)
@@ -34,6 +45,7 @@
             }
             else{
                 //If user does not want to log in (aka userWantsToLogin returns false/null - simply display the loginview as usual (empty form)
-             }    */
+                return "User have not yet tried to log in or out.";
+             }
         }
     }
