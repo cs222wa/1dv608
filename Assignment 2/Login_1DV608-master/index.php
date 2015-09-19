@@ -13,6 +13,8 @@ require_once('model/User.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
+$lc = false;
+
 //CREATE OBJECTS OF THE VIEWS
 $v = new \view\LoginView();
 $dtv = new \view\DateTimeView();
@@ -29,6 +31,6 @@ var_dump($lc->doLogin());
 $lc->doLogin();
 
 //RENDER THE LAYOUTVIEW METHOD render IN ORDER TO DISPLAY LOGIN PAGE
-$lv->render(false, $v, $dtv);
+$lv->render($lc, $v, $dtv);
 
 

@@ -22,19 +22,18 @@ class LoginView {
 	 */
 	public function response() {
 
-		/*
-		if($result){
-			$message = 'Login Success!';
+		if(isset($_SESSION['usernameInput'])){
+			$message = 'You are already logged in.';
+
+			$response = $this->generateLogoutButtonHTML($message);
+			return $response;
 		}
 		else{
-			$message = 'Login failed. Please enter another username and/or password.';
+			$message = 'You are not logged in.';
+
+			$response = $this->generateLoginFormHTML($message);
+			return $response;
 		}
-		*/
-		$message = '';
-
-		$response = $this->generateLoginFormHTML($message);
-		return $response;
-
 	}
 
 	/**
@@ -64,7 +63,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $_POST[self::$name] . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -93,19 +92,22 @@ class LoginView {
 	public function userWantsToLogin(){
 		//Find out if user have clicked the login-button = a login attempt has been made.
 		if (isset($_POST[self::$login])){
-
-			//If button is clicked - return the information provided in the username and password fields
-			if(isset($_POST[self::$name]) && isset($_POST[self::$password])){
-
-				$loginUser = array();
-				$loginUser[] = $_POST[self::$name];
-				$loginUser[] = $_POST[self::$password];
-				return $loginUser;
-			}
+			return true;
 		}
 		//If login button is not clicked return false.
 		return false;
 
+	}
+
+	public function getInput(){
+		//If button is clicked - return the information provided in the username and password fields
+		if(isset($_POST[self::$name]) && isset($_POST[self::$password])){
+
+			$loginUser = array();
+			$loginUser[] = $_POST[self::$name];
+			$loginUser[] = $_POST[self::$password];
+			return $loginUser;
+		}
 	}
 
 	public function userIsLoggedIn(){

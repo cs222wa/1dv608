@@ -17,23 +17,27 @@
            //IF USER WANTS TO LOGIN INTO THE APPLICATION (BY CLICKING THE LOGIN BUTTON)
             if ($this->loginView->userWantsToLogin()){
                 //GET THE LOGIN INFORMATION PROVIDED BY THE USER
-                $loginInfo = $this->loginView->userWantsToLogin();
+                $loginInfo = $this->loginView->getInput();
                 $assignedUsername = $loginInfo[0];
                 $assignedPassword = $loginInfo[1];
 
-                //send login information to User in order to control that both Username and Password has been provided.
+
+                $this->loginModel->tryToLogin($assignedUsername, $assignedPassword);
+
+                $this->loginView->response();
+
+               /* //send login information to User in order to control that both Username and Password has been provided.
                 //and that they match with the information in the system
                   if($controlUsername = $this->loginModel->getRequestUserName($loginInfo[0])){
                       if($controlPassword = $this->loginModel->getRequestPassword($loginInfo[1])){
                           //If the result from the model says all is correct - login user: display new view with login message and send request to view to render logout button.
-
-                          return 'user logged in';
+                          return true;
                       }
                       //If the result from the model says something is wrong - request the user to enter their information again - provide recently used username in form!
-                    return 'user not logged in';
+                    return false;
                   }
                 //If the result from the model says something is wrong - request the user to enter their information again - provide recently used username in form!
-                'user not logged in';
+                return false;*/
             }
             elseif($this->loginView->userIsLoggedIn()){
                 //send question to view if user is already verified and logged in. (ex has the logout button been rendered?)
@@ -45,7 +49,7 @@
             }
             else{
                 //If user does not want to log in (aka userWantsToLogin returns false/null - simply display the loginview as usual (empty form)
-                return "User have not yet tried to log in or out.";
+                return false;
              }
         }
     }

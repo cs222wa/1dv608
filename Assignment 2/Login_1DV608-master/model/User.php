@@ -16,16 +16,15 @@
             $this->password = $password;
         }
 
-        public function getRequestUserName($usernameInput)
+   /*     public function getRequestUserName($usernameInput)
         {
             //assert that the provided input is a string and is longer than 0 characters
             assert(is_string($usernameInput) && strlen($usernameInput) > 0);
-
-            //save the provided username in a session variable.
-            $_SESSION['providedUsername'] = $usernameInput;
             //Compare the two usernames to see if they match
 
-            if ($usernameInput = $this->username) {
+            if ($usernameInput == $this->username) {
+                //save the provided username in a session variable.
+                $_SESSION['providedUsername'] = $usernameInput;
                 return true;
             }
             return false;
@@ -40,7 +39,29 @@
                 return true;
             }
             return false;
+        }*/
+
+
+        public function tryToLogin($usernameInput, $passwordInput){
+            //assert that the provided input is a string and is longer than 0 characters
+          //  assert(is_string($usernameInput) && strlen($usernameInput) > 0);
+            //assert that the provided input is a string and is longer than 0 characters
+          //  assert(is_string($passwordInput) && strlen($passwordInput) > 0);
+            //Compare the two usernames to see if they match
+
+            if ($usernameInput == $this->username) {
+                //Compare the two passwords to see if they match
+                if ($passwordInput == $this->password) {
+                    $_SESSION['usernameInput'] = $this->username;
+                    $_SESSION['passwordInput'] = $this->password;
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
     }
 
     //Store provided username in session in order to display it in the form.
+
+    //gör metod för $_SESSION['LoggedIn'] = true;
