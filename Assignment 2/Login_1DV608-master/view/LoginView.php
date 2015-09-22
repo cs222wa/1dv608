@@ -22,18 +22,43 @@ class LoginView {
 	 */
 	public function response() {
 
-		if(isset($_SESSION['usernameInput'])){
-			$message = 'You are already logged in.';
+		//create different messages by checking for a specific session variable.
 
-			$response = $this->generateLogoutButtonHTML($message);
+		if(isset($_SESSION['noUsername'])){
+			//if user didn't fill in a username
+			$message = 'Username is missing';
+			$response = $this->generateLoginFormHTML($message);
 			return $response;
 		}
-		else{
-			$message = 'You are not logged in.';
+		elseif(isset($_SESSION['noPassword'])){
+			//if user didn't fill in a username
+			$message = 'Password is missing';
+			$response = $this->generateLoginFormHTML($message);
+			return $response;
+		}
+		elseif(isset($_SESSION['loggedIn'])){
+			//if user succesfully logged in to the aplication
+				$message = 'Welcome';
+				$response = $this->generateLogoutButtonHTML($message);
+				return $response;
+		}
+		elseif(isset($_SESSION['loginFail'])){
+			//if the user failed to login to the application
+			$message = 'Wrong name or password';
 
 			$response = $this->generateLoginFormHTML($message);
 			return $response;
 		}
+		else{
+			$message = '';
+			$response = $this->generateLoginFormHTML($message);
+			return $response;
+		}
+		/*
+
+
+		*/
+
 	}
 
 	/**
@@ -90,11 +115,11 @@ class LoginView {
 	}
 
 	public function userWantsToLogin(){
-		//Find out if user have clicked the login-button = a login attempt has been made.
+		//Find out if user have clicked the login-button.
 		if (isset($_POST[self::$login])){
 			return true;
 		}
-		//If login button is not clicked return false.
+		//If logout button is not clicked return false.
 		return false;
 
 	}
@@ -111,10 +136,20 @@ class LoginView {
 	}
 
 	public function userIsLoggedIn(){
-		//find out if the user is already logger in.
+		//find out if the user is already logged in.
+		if(isset($_SESSION['loggedIn'])){
+			return true;
+		}
+		return false;
 	}
 
 	public function userWantsToLogout(){
 		//find out if an attempt to log out has been made.
+		//Find out if user have clicked the login-button = a login attempt has been made.
+		if (isset($_POST[self::$logout])){
+			return true;
+		}
+		//If login button is not clicked return false.
+		return false;
 	}
 }

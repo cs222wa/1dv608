@@ -21,16 +21,16 @@ $dtv = new \view\DateTimeView();
 $lv = new \view\LayoutView();
 
 //CREATE OBJECTS OF THE MODEL
-$u = new \model\User("Admin", "supersecret007");
+$u = new \model\User("Admin", "pw");
 
 //CREATE OBJECT OF THE CONTROLLER - SEND OBJECTS OF LoginVIEW AND User AS PARAMETERS
 $lc = new \controller\LoginController($v, $u);
 
-var_dump($lc->doLogin());
+//var_dump($lc->doLogin());
 //CALL CONTROLLER METHOD doLogin IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE WITH THE APPLICATION
-$lc->doLogin();
+$isLoggedIn = $lc->doLogin();
 
 //RENDER THE LAYOUTVIEW METHOD render IN ORDER TO DISPLAY LOGIN PAGE
-$lv->render($lc, $v, $dtv);
+$lv->render($isLoggedIn, $v, $dtv);
 
-
+session_destroy();

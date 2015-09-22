@@ -16,52 +16,39 @@
             $this->password = $password;
         }
 
-   /*     public function getRequestUserName($usernameInput)
-        {
-            //assert that the provided input is a string and is longer than 0 characters
-            assert(is_string($usernameInput) && strlen($usernameInput) > 0);
-            //Compare the two usernames to see if they match
-
-            if ($usernameInput == $this->username) {
-                //save the provided username in a session variable.
-                $_SESSION['providedUsername'] = $usernameInput;
-                return true;
-            }
-            return false;
+        //assert that the provided input is a string and is longer than 0 characters
+        private function assertInput($input){
+           return assert(is_string($input) && strlen($input) > 0);
         }
 
-        public function getRequestPassword($passwordInput)
-        {
-            //assert that the provided input is a string and is longer than 0 characters
-            assert(is_string($passwordInput) && strlen($passwordInput) > 0);
-            //Compare the two passwords to see if they match
-            if ($passwordInput == $this->password) {
-                return true;
-            }
-            return false;
-        }*/
-
-
         public function tryToLogin($usernameInput, $passwordInput){
-            //assert that the provided input is a string and is longer than 0 characters
-          //  assert(is_string($usernameInput) && strlen($usernameInput) > 0);
-            //assert that the provided input is a string and is longer than 0 characters
-          //  assert(is_string($passwordInput) && strlen($passwordInput) > 0);
+            //send input to be asserted
+            if(!$this->assertInput($usernameInput)){
+                //If username is not a string or less than 0 characters - create session variable and throw an exception
+                $_SESSION["noUsername"] = true;
+               // throw new \Exception;
+            }
+            //send input to be asserted
+            if(!$this->assertInput($passwordInput)){
+                //If password is not a string or less than 0 characters - create session variable and throw an exception
+                $_SESSION["noPassword"] = true;
+               // throw new \Exception;
+            }
             //Compare the two usernames to see if they match
-
             if ($usernameInput == $this->username) {
                 //Compare the two passwords to see if they match
                 if ($passwordInput == $this->password) {
-                    $_SESSION['usernameInput'] = $this->username;
-                    $_SESSION['passwordInput'] = $this->password;
+                    //If they are both correct, create sessionvariable with the username.
+                    $_SESSION['loggedIn'] = $this->username;
+                   // $_SESSION['passwordInput'] = $this->password;
                     return true;
                 }
+                //if password fails, a session variable is created and the method returns false.
+                $_SESSION['loginFail'] = true;
                 return false;
             }
+            //if username fails, a session variable is created and the method returns false.
+            $_SESSION['loginFail'] = true;
             return false;
         }
     }
-
-    //Store provided username in session in order to display it in the form.
-
-    //gör metod för $_SESSION['LoggedIn'] = true;
