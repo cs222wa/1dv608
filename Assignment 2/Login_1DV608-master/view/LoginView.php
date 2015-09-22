@@ -11,7 +11,7 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
-	
+	private $message;
 
 	/**
 	 * Create HTTP response
@@ -21,45 +21,52 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-
-		//create different messages by checking for a specific session variable.
-
-		if(isset($_SESSION['noUsername'])){
-			//if user didn't fill in a username
-			$message = 'Username is missing';
-			$response = $this->generateLoginFormHTML($message);
-			return $response;
-		}
-		elseif(isset($_SESSION['noPassword'])){
-			//if user didn't fill in a username
-			$message = 'Password is missing';
-			$response = $this->generateLoginFormHTML($message);
-			return $response;
-		}
-		elseif(isset($_SESSION['loggedIn'])){
-			//if user succesfully logged in to the aplication
-				$message = 'Welcome';
-				$response = $this->generateLogoutButtonHTML($message);
-				return $response;
-		}
-		elseif(isset($_SESSION['loginFail'])){
-			//if the user failed to login to the application
-			$message = 'Wrong name or password';
-
-			$response = $this->generateLoginFormHTML($message);
-			return $response;
+		$message = $this->message;
+		//render different HTML views and messages dependant on users login success
+		if(isset($_SESSION['loggedIn'])){ //ska ligga i user
+			//user passed login
+			$response = $this->generateLogoutButtonHTML($message);
 		}
 		else{
-			$message = '';
+			//user failed login
 			$response = $this->generateLoginFormHTML($message);
-			return $response;
 		}
-		/*
-
-
-		*/
-
+		return $response;
 	}
+
+	//Displays the message Welcome on login
+	public function loginSuccess(){
+		return $this->getMessage('Welcome');
+	}
+
+	public function loginFail(){
+		return $this->getMessage('Wrong name or password');
+	}
+
+	//Displays the message Bye bye on logout
+	public function logoutSuccess(){
+		return $this->getMessage('Bye bye');
+	}
+
+	//returns message to response()
+	public function getMessage($messagetype){
+		return $this->message = $messagetype;
+	}
+
+	//Checks if user filled out the login form correctly
+	public function checkInput(){
+		if(empty($_POST[self::$name])){
+			return $this->getMessage("Username is missing");
+		}
+		elseif(empty($_POST[self::$password])){
+			return $this->getMessage("Password is missing");
+		}
+		else{
+			//if neither password not username is provided - return false.
+			return false;
+		}
+	}
+
 
 	/**
 	* Generate HTML code on the output buffer for the logout button
@@ -88,7 +95,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $_POST[self::$name] . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -102,30 +109,28 @@ class LoginView {
 		';
 	}
 	
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
+	//GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
-
-		// Skapa flera liknande get-funktioner som denna för att ta reda på vad användaren gjort/skrivit.
-		//är till för att läsa från post-variablerna
-		//Det är controllern som anropar och frågar efter input på username.
-
-		//get request password/login/logout etc (se överst i dokumentet som har med formuläret att göra.)
-
-		//RETURN REQUEST VARIABLE: USERNAME
+		//control if the user have entered anything in the username field
+		if(isset($_POST[self::$name])){
+			return $_POST[self::$name];
+		}
+		//if username field in the form is empty on submition - display empty form.
+		return "";
 	}
 
+	//Finds out if user have clicked the login-button.
 	public function userWantsToLogin(){
-		//Find out if user have clicked the login-button.
 		if (isset($_POST[self::$login])){
 			return true;
 		}
 		//If logout button is not clicked return false.
 		return false;
-
 	}
 
+	//returns the input from the user
 	public function getInput(){
-		//If button is clicked - return the information provided in the username and password fields
+		//If the form is filled out correctly - Return the information provided in the username and password fields
 		if(isset($_POST[self::$name]) && isset($_POST[self::$password])){
 
 			$loginUser = array();
@@ -133,20 +138,23 @@ class LoginView {
 			$loginUser[] = $_POST[self::$password];
 			return $loginUser;
 		}
-	}
-
-	public function userIsLoggedIn(){
-		//find out if the user is already logged in.
-		if(isset($_SESSION['loggedIn'])){
-			return true;
-		}
+		//if the form is not correctly filled out - return false.
 		return false;
 	}
 
+	//find out if the user is already logged in.
+	public function userIsLoggedIn(){
+		if(isset($_SESSION['loggedIn'])){
+			return true;
+		}
+		//if user is not logged in return false.
+		return false;
+	}
+
+	//find out if an attempt to log out has been made (if user have clicked the logout button).
 	public function userWantsToLogout(){
-		//find out if an attempt to log out has been made.
-		//Find out if user have clicked the login-button = a login attempt has been made.
 		if (isset($_POST[self::$logout])){
+			unset($_SESSION['loggedIn']);
 			return true;
 		}
 		//If login button is not clicked return false.

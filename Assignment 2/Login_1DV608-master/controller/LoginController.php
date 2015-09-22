@@ -11,46 +11,54 @@
             $this->loginModel = $loginModel;
         }
 
-        //METHOD RUNS EVERYTHIME THE PAGE IS RELOADED IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE
+        //METHOD RUNS WHEN THE PAGE IS LOADED IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE
         public function doLogin(){
-
            //IF USER WANTS TO LOGIN INTO THE APPLICATION (BY CLICKING THE LOGIN BUTTON)
             if ($this->loginView->userWantsToLogin()){
+                //check if input is valid
+                if($this->loginView->checkInput()){
+                    //if input is not valid - call method in view to display appropriate response
+                    $this->loginView->response();
+                    //return false to index.php to render correct view
+                    return false;
+                }
                 //GET THE LOGIN INFORMATION PROVIDED BY THE USER
                 $loginInfo = $this->loginView->getInput();
                 $assignedUsername = $loginInfo[0];
                 $assignedPassword = $loginInfo[1];
-                //send login information to User in order to control that both Username and Password has been provided.
-                //and that they match with the information in the system
+                //send login information to Model in order to control that both Username and Password match the information in the system
                 $outcome = $this->loginModel->tryToLogin($assignedUsername, $assignedPassword);
-                //Call response method in the view which checks the outcome saved in a $_SESSION variable.
-                $this->loginView->response();
-                return $outcome;
+                //If the login information passes validation...
+                if($outcome){
+                    //...send login message type from view to session in user
+                    $this->loginModel->setMessage( $this->loginView->loginSuccess());
+                }
+                else{
+                    //If the login information doesn't pass validation - send login fail message type from view to session in user
+                    $this->loginModel->setMessage( $this->loginView->loginFail());
+                    //return true/false to index.php to render correct view
+                    return $outcome;
+                }
             }
+            //send question to view if user is already verified and logged in.
             elseif($this->loginView->userIsLoggedIn()){
-                //send question to view if user is already verified and logged in. (ex has the logout button been rendered?)
-
+                //If user is logged in, send question to method in view if the logout button has been clicked
                 if($this->loginView->userWantsToLogout()){
-                    //send question to method in view if the logout button has been clicked
+                    //If user wants to log out...
                     if ($this->loginView->userWantsToLogout()){
-                        //if button is clicked - true - log out user.
+                        //... send logout message type from view to session in user
+                        $this->loginModel->setMessage( $this->loginView->logoutSuccess());
+                        //then log out user.
                         $this->loginView->response();
+                        //return false to index.php to render correct view
                         return false;
                     }
+                    //return false to index.php to render correct view
                     return false;
-
-                    /*
-                     * Session for welcome message-
-                     * Save message in session variable
-                     * do a page reload (NOT page redirect, but another one)
-                     * Reload the session variable
-                     * kill the session.
-                     *
-                     */
                 }
             }
             else{
-                //If user does not want to log in (aka userWantsToLogin returns false/null - simply display the loginview as usual (empty form)
+                //If user does not want to log in - send false to index.php to render an empty form
                 return false;
              }
         }

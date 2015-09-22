@@ -1,6 +1,8 @@
 <?php
 //Starts new session - spara sessionsvariabler i modellen (view - controller - modell)
-session_start();
+//if (!isset($_SESSION['loggedIn'])){
+    session_start();
+//}
 
 //INCLUDE THE FILES NEEDED...
 require_once('controller/LoginController.php');
@@ -15,13 +17,13 @@ ini_set('display_errors', 'On');
 
 $lc = false;
 
+//CREATE OBJECTS OF THE MODEL
+$u = new \model\User("Admin", "pw");
+
 //CREATE OBJECTS OF THE VIEWS
 $v = new \view\LoginView();
 $dtv = new \view\DateTimeView();
 $lv = new \view\LayoutView();
-
-//CREATE OBJECTS OF THE MODEL
-$u = new \model\User("Admin", "pw");
 
 //CREATE OBJECT OF THE CONTROLLER - SEND OBJECTS OF LoginVIEW AND User AS PARAMETERS
 $lc = new \controller\LoginController($v, $u);
@@ -33,4 +35,4 @@ $isLoggedIn = $lc->doLogin();
 //RENDER THE LAYOUTVIEW METHOD render IN ORDER TO DISPLAY LOGIN PAGE
 $lv->render($isLoggedIn, $v, $dtv);
 
-session_destroy();
+
