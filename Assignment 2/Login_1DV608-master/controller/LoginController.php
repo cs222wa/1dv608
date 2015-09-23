@@ -21,6 +21,8 @@
                     if ($this->loginView->userWantsToLogout()){
                         //... send logout message type from view to session in user
                         $this->loginModel->setMessage( $this->loginView->logoutSuccess());
+                        //make a GET of the page.
+                        $this->loginView->getURL();
                         //then log out user.
                         $this->loginView->response();
                         //return false to index.php to render correct view
@@ -49,6 +51,8 @@
                 if($outcome){
                     //...send login message type from view to session in user
                     $this->loginModel->setMessage( $this->loginView->loginSuccess());
+                    //make a GET of the page.
+                    $this->loginView->getURL();
                     //return true to index.php to render correct view
                     return $outcome;
                 }
@@ -63,6 +67,7 @@
                 //If user does not want to log in - send false to index.php to render an empty form
                 return false;
              }
+            //if user logs in - send true to index.php to render an empty form
             return true;
         }
     }

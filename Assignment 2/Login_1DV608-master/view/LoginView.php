@@ -12,7 +12,6 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 
 	private $message;
-
 	/**
 	 * Create HTTP response
 	 *
@@ -23,7 +22,7 @@ class LoginView {
 	public function response() {
 		$message = $this->message;
 		//render different HTML views and messages dependant on users login success
-		if(isset($_SESSION['loggedIn'])){ //ska ligga i user
+		if(isset($_SESSION['loggedIn'])){
 			//user passed login
 			$response = $this->generateLogoutButtonHTML($message);
 		}
@@ -56,9 +55,11 @@ class LoginView {
 	//Checks if user filled out the login form correctly
 	public function checkInput(){
 		if(empty($_POST[self::$name])){
+			//if form is empty - display error message
 			return $this->getMessage("Username is missing");
 		}
 		elseif(empty($_POST[self::$password])){
+			//if form is empty - display error message
 			return $this->getMessage("Password is missing");
 		}
 		else{
@@ -131,7 +132,6 @@ class LoginView {
 	public function getInput(){
 		//If the form is filled out correctly - Return the information provided in the username and password fields
 		if(isset($_POST[self::$name]) && isset($_POST[self::$password])){
-
 			$loginUser = array();
 			$loginUser[] = $_POST[self::$name];
 			$loginUser[] = $_POST[self::$password];
@@ -153,11 +153,20 @@ class LoginView {
 	//find out if an attempt to log out has been made (if user have clicked the logout button).
 	public function userWantsToLogout(){
 		if (isset($_POST[self::$logout])){
-			//if user klicked the button - unset the session
+			//if user clicked the button - unset the session
 			unset($_SESSION['loggedIn']);
 			return true;
 		}
 		//If login button is not clicked return false.
 		return false;
+	}
+
+	public function getURL(){
+		//If a POST has been made...
+		if ($_POST) {
+			//... redirect the page to self
+			header("Location: " . $_SERVER['REQUEST_URI']);
+			die(); //terminate call
+		}
 	}
 }
