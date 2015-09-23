@@ -13,8 +13,25 @@
 
         //METHOD RUNS WHEN THE PAGE IS LOADED IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE
         public function doLogin(){
+            //send question to view if user is already verified and logged in.
+        if($this->loginView->userIsLoggedIn()){
+                //If user is logged in, send question to method in view if the logout button has been clicked
+                if($this->loginView->userWantsToLogout()){
+                    //If user wants to log out...
+                    if ($this->loginView->userWantsToLogout()){
+                        //... send logout message type from view to session in user
+                        $this->loginModel->setMessage( $this->loginView->logoutSuccess());
+                        //then log out user.
+                        $this->loginView->response();
+                        //return false to index.php to render correct view
+                        return false;
+                    }
+                    //return true to index.php if user is logged in
+                    return true;
+                }
+            }
            //IF USER WANTS TO LOGIN INTO THE APPLICATION (BY CLICKING THE LOGIN BUTTON)
-            if ($this->loginView->userWantsToLogin()){
+            elseif ($this->loginView->userWantsToLogin()){
                 //check if input is valid
                 if($this->loginView->checkInput()){
                     //if input is not valid - call method in view to display appropriate response
@@ -32,34 +49,20 @@
                 if($outcome){
                     //...send login message type from view to session in user
                     $this->loginModel->setMessage( $this->loginView->loginSuccess());
+                    //return true to index.php to render correct view
+                    return $outcome;
                 }
                 else{
                     //If the login information doesn't pass validation - send login fail message type from view to session in user
                     $this->loginModel->setMessage( $this->loginView->loginFail());
-                    //return true/false to index.php to render correct view
-                    return $outcome;
-                }
-            }
-            //send question to view if user is already verified and logged in.
-            elseif($this->loginView->userIsLoggedIn()){
-                //If user is logged in, send question to method in view if the logout button has been clicked
-                if($this->loginView->userWantsToLogout()){
-                    //If user wants to log out...
-                    if ($this->loginView->userWantsToLogout()){
-                        //... send logout message type from view to session in user
-                        $this->loginModel->setMessage( $this->loginView->logoutSuccess());
-                        //then log out user.
-                        $this->loginView->response();
-                        //return false to index.php to render correct view
-                        return false;
-                    }
                     //return false to index.php to render correct view
-                    return false;
+                    return $outcome;
                 }
             }
             else{
                 //If user does not want to log in - send false to index.php to render an empty form
                 return false;
              }
+            return true;
         }
     }

@@ -24,6 +24,10 @@
                 if ($passwordInput == $this->password) {
                     //If they are both correct, create a loggedIn sessionvariable.
                     $_SESSION['loggedIn'] = $this->username;
+                    /*
+                    //create a cookie with a random ID with 30 days lifespan containing the session (username).
+                    setcookie('login', $_SESSION['loggedIn'] . rand(), time()*60*60*24*30);
+                    */
                     return true;
                 }
                 //if password fails, no session variable is created and the method returns false.

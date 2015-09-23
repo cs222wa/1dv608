@@ -67,7 +67,6 @@ class LoginView {
 		}
 	}
 
-
 	/**
 	* Generate HTML code on the output buffer for the logout button
 	* @param $message, String output message
@@ -154,6 +153,7 @@ class LoginView {
 	//find out if an attempt to log out has been made (if user have clicked the logout button).
 	public function userWantsToLogout(){
 		if (isset($_POST[self::$logout])){
+			//if user klicked the button - unset the session
 			unset($_SESSION['loggedIn']);
 			return true;
 		}
