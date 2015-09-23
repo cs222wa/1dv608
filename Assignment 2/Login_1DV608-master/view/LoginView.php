@@ -1,6 +1,5 @@
 <?php
 namespace view;
-
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -10,7 +9,6 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
-
 	private $message;
 	/**
 	 * Create HTTP response
@@ -32,26 +30,21 @@ class LoginView {
 		}
 		return $response;
 	}
-
 	//Displays the message Welcome on login
 	public function loginSuccess(){
 		return $this->getMessage('Welcome');
 	}
-
 	public function loginFail(){
 		return $this->getMessage('Wrong name or password');
 	}
-
 	//Displays the message Bye bye on logout
 	public function logoutSuccess(){
-		return $this->getMessage('Bye bye');
+		return $this->getMessage('Bye bye!');
 	}
-
 	//returns message to response()
 	public function getMessage($messagetype){
 		return $this->message = $messagetype;
 	}
-
 	//Checks if user filled out the login form correctly
 	public function checkInput(){
 		if(empty($_POST[self::$name])){
@@ -67,12 +60,11 @@ class LoginView {
 			return false;
 		}
 	}
-
 	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
+	 * Generate HTML code on the output buffer for the logout button
+	 * @param $message, String output message
+	 * @return  void, BUT writes to standard output!
+	 */
 	private function generateLogoutButtonHTML($message) {
 		return '
 			<form  method="post" >
@@ -81,12 +73,12 @@ class LoginView {
 			</form>
 		';
 	}
-	
+
 	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
+	 * Generate HTML code on the output buffer for the logout button
+	 * @param $message, String output message
+	 * @return  void, BUT writes to standard output!
+	 */
 	private function generateLoginFormHTML($message) {
 		return '
 			<form method="post" > 
@@ -96,10 +88,8 @@ class LoginView {
 					
 					<label for="' . self::$name . '">Username :</label>
 					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
-
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-
 					<label for="' . self::$keep . '">Keep me logged in  :</label>
 					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
 					
@@ -108,7 +98,7 @@ class LoginView {
 			</form>
 		';
 	}
-	
+
 	//GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
 		//control if the user have entered anything in the username field
@@ -118,7 +108,6 @@ class LoginView {
 		//if username field in the form is empty on submition - display empty form.
 		return "";
 	}
-
 	//Finds out if user have clicked the login-button.
 	public function userWantsToLogin(){
 		if (isset($_POST[self::$login])){
@@ -127,7 +116,6 @@ class LoginView {
 		//If logout button is not clicked return false.
 		return false;
 	}
-
 	//returns the input from the user
 	public function getInput(){
 		//If the form is filled out correctly - Return the information provided in the username and password fields
@@ -140,7 +128,6 @@ class LoginView {
 		//if the form is not correctly filled out - return false.
 		return false;
 	}
-
 	//find out if the user is already logged in.
 	public function userIsLoggedIn(){
 		if(isset($_SESSION['loggedIn'])){
@@ -149,24 +136,27 @@ class LoginView {
 		//if user is not logged in return false.
 		return false;
 	}
-
 	//find out if an attempt to log out has been made (if user have clicked the logout button).
 	public function userWantsToLogout(){
 		if (isset($_POST[self::$logout])){
-			//if user clicked the button - unset the session
+			//if user clicked the button - unset the login session
 			unset($_SESSION['loggedIn']);
 			return true;
 		}
 		//If login button is not clicked return false.
 		return false;
 	}
-
 	public function getURL(){
 		//If a POST has been made...
 		if ($_POST) {
 			//... redirect the page to self
-			header("Location: " . $_SERVER['REQUEST_URI']);
-			die(); //terminate call
+			$URL="index.php";
+			echo '<META HTTP-EQUIV=URL=' . $URL . '">';
+
+			//NOTE: USING HEADER() CAUSES MESSAGES NOT TO DISPLAY AT ALL.
+			//header("Location: dn.se ");
+			//die(); //terminate call
 		}
+
 	}
 }

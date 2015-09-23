@@ -26,7 +26,8 @@ $lv = new \view\LayoutView();
 //CREATE OBJECT OF THE CONTROLLER - SEND OBJECTS OF LoginVIEW AND User AS PARAMETERS
 $lc = new \controller\LoginController($v, $u);
 
-//var_dump($lc->doLogin());
+var_dump($_SESSION['Message']);
+var_dump($_SESSION['loggedIn']);
 //CALL CONTROLLER METHOD doLogin IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE WITH THE APPLICATION
 $isLoggedIn = $lc->doLogin();
 
