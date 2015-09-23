@@ -146,20 +146,4 @@ class LoginView {
 		//If login button is not clicked return false.
 		return false;
 	}
-	public function getURL(){
-		//If a POST has been made...
-		if ($_POST) {
-			//... redirect the page to self
-			header("Location: dn.se ");
-			die(); //terminate call
-
-			//NOTE: USING HEADER() CAUSES MESSAGES NOT TO DISPLAY AT ALL, BUT USING echo '<META HTTP-EQUIV=URL=' . $URL . '">';
-			//CREATES LARGER ERROR MESSAGE.
-
-			//$URL="index.php";
-			//echo '<META HTTP-EQUIV=URL=' . $URL . '">';
-
-		}
-
-	}
 }

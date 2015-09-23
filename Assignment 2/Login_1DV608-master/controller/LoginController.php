@@ -16,7 +16,7 @@ class LoginController{
                 //If user wants to log out send logout message type from view to session in user
                     $this->loginModel->setMessage( $this->loginView->logoutSuccess());
                     //make a GET of the page.
-                    $this->loginView->getURL();
+                    //$this->loginView->getURL();
                     //then log out user.
                     $this->loginView->response();
                     //return false to index.php to render correct view
@@ -45,7 +45,7 @@ class LoginController{
                 //...send login message type from view to session in user
                 $this->loginModel->setMessage( $this->loginView->loginSuccess());
                 //make a GET of the page.
-                $this->loginView->getURL();
+                //$this->loginView->getURL();
                 //return true to index.php to render correct view
                 return $outcome;
             }
