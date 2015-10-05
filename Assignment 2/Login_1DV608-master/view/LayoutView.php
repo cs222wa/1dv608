@@ -6,7 +6,7 @@ use model\Register;
 
 class LayoutView {
   
-  public function render($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $rv) {
+  public function render($isLoggedIn, $v, DateTimeView $dtv) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -15,11 +15,14 @@ class LayoutView {
         </head>
         <body>
           <h1>Assignment 2</h1>
-            <a href="?register">Register a new user</a>
+           <!-- <a href="?register">Register a new user</a>  -->
+           ' . $v->renderLink() . '
 
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
           
           <div class="container">
+
+
               ' . $v->response() . '
               
               ' . $dtv->show() . '
@@ -41,13 +44,12 @@ class LayoutView {
   public function setLayout($isLoggedIn, LoginView $v, DateTimeView $dtv, RegisterView $rv){
 
       if($this->checkURL()){
-        //create a new RegisterController
-        //$rc = new \controller\RegisterController($rv, $r);
-        //display RegisterView if checkURL returns true
+        //if checkURL returns true - render html with RegisterView
+        $this->render($isLoggedIn, $rv, $dtv);
       }
     else{
-      //else, display ordinary loginview
-      $this->render($isLoggedIn, $v, $dtv, $rv);
+      //else -  render html with LoginView
+      $this->render($isLoggedIn, $v, $dtv);
     }
   }
 
