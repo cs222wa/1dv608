@@ -12,6 +12,7 @@ class User
         $this->username = $username;
         $this->password = $password;
     }
+
     //login user
     public function tryToLogin($usernameInput, $passwordInput){
         //send username and password to constructor to validate if they are of type string and more than 0 characters long

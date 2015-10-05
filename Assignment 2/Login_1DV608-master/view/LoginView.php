@@ -99,6 +99,7 @@ class LoginView {
 		';
 	}
 
+
 	//GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	private function getRequestUserName() {
 		//control if the user have entered anything in the username field
