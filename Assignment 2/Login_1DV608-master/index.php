@@ -20,7 +20,7 @@ $lc = false;
 
 //CREATE OBJECTS OF THE MODEL
 $u = new \model\User("Admin", "pw");
-$r = new \model\Register();
+$r = new \model\Register("test", "test", "test");
 
 //CREATE OBJECTS OF THE VIEWS
 $v = new \view\LoginView();
