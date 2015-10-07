@@ -4,13 +4,11 @@ class User
 {
     private $username;
     private $password;
+    private $bcrypt;
     //create and assert valid user and login information on creation
-    public function __construct($username, $password)
+    public function __construct()
     {
-        assert(is_string($username) && strlen($username) > 0);
-        assert(is_string($password) && strlen($password) > 0);
-        $this->username = $username;
-        $this->password = $password;
+        $this->bcrypt = new \Bcrypt();
     }
 
     //login user
@@ -28,7 +26,7 @@ class User
             //if they match - open file
             $file = fopen("data/" . $usernameInput . ".txt", "r");
             //if the de-hashed password and user input matches...
-            if(password_verify($passwordInput, fgets($file))){
+            if($this->bcrypt->verify($passwordInput, fgets($file))){
                 //close the file
                 fclose($file);
                 //set logged in session and return true

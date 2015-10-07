@@ -11,6 +11,7 @@ require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('model/User.php');
 require_once('model/Register.php');
+require_once('model/Bcrypt.php');
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
