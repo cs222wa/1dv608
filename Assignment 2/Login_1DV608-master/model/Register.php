@@ -19,26 +19,17 @@ class Register{
          *         */
     }
 
-    public function setMessage($message){
-        $_SESSION['Message'] = $message;
+    public function checkIfUserExists($username){
+        //check if user exists against harcoded username value
+        if($username == "Admin") {
+            return true;
+        }
+        return false;
     }
 
-    public function validateInput($usernameInput, $passwordInput, $passwordRepeatedInput){
-        try{
-            new User($usernameInput, $passwordInput, $passwordRepeatedInput);
-        }
-        catch(\Exception $e){
-            //if username or password doesn't pass validation - return false.
-            return false;
-        }
-    }
+    public function registerUser($username, $password){
 
+        //skriv in användarnamn & lösenord i text-fil.
+
+    }
 }
-
-
-/*
-    //clear txt-filen and then rewrite everything with the information in array to txt-file?
-    public function addUser(){
-
-    }
- */

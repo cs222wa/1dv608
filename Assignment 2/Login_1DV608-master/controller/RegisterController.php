@@ -8,34 +8,24 @@ class RegisterController{
         $this->regModel = $registerModel;
         $this->regView = $registerView;
         $this->doRegister();
+        $this->regView->setMessage();
     }
 
     public function doRegister(){
         //if register button is pressed
         if($this->regView->userWantsToRegister()){
             //fetch input from user
-            $userInput = $this->regView->getUserInput();
-            $assignedUsername = $userInput[0];
-            $assignedPassword = $userInput[1];
-            $assignedPasswordRepeat = $userInput[2];
-            //if the input passes validation
-            $outcome = $this->regModel->validateInput($userInput[0],$userInput[1], $userInput[2]);
-            if($outcome){
-                //register user
-                $this->regModel->registerUser($userInput);
-                //set and return successmessage to view
-                $this->regModel->setMessage( $this->regView->registerSuccess()); //<--needed???
-                //render view
-                $this->regView->response();
+            $assignedUsername = $this->regView->getInputUsername();
+            $assignedPassword = $this->regView->getInputPassword();
+            //check if user already exists
+            if($this->regModel->checkIfUserExists($assignedUsername)){
+                //if user already exists - set RegisterView variable accordingly and call setMessage
+                $this->regView->userAlreadyExists = true;
             }
-            else{
-                //If the login information doesn't pass validation - send login fail message type from view to session in user
-                $this->regModel->setMessage( $this->regView->registrationFail());
-                //render view
-                $this->regView->response();
-            }
+            //register user
+            $this->regModel->registerUser($assignedUsername, $assignedPassword);
+            //set and return success message to view
+            $this->regView->registrationSuccess = true;
         }
-
-
     }
 }
