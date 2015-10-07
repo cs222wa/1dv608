@@ -4,32 +4,22 @@ class Register{
     private $username;
     private $password;
     private $passwordRepeated;
-    //create and assert valid user and login information on creation
-    public function __construct($username, $password, $passwordRepeated)
-    {
-        assert(is_string($username) && strlen($username) > 0);
-        assert(is_string($password) && strlen($password) > 0);
-        assert(is_string($passwordRepeated) && strlen($passwordRepeated) > 0);
-        $this->username = $username;
-        $this->password = $password;
-        $this->passwordRepeated = $passwordRepeated;
-        /*
-         * take users new registration input as argument (password, repeated password and username)
-         *
-         *         */
-    }
 
     public function checkIfUserExists($username){
-        //check if user exists against harcoded username value
-        if($username == "Admin") {
+        //check if user exists against folder containing username files
+        if(file_exists("data/" .$username . ".txt")){
             return true;
         }
         return false;
     }
 
     public function registerUser($username, $password){
-
-        //skriv in användarnamn & lösenord i text-fil.
-
+        //create new text file in data folder with the same name as the user
+        $newUserFile = fopen("data/" .$username . ".txt", "w");
+        //hash user password
+        $input = password_hash($password, PASSWORD_DEFAULT);
+        //write new file and information to folder
+        fwrite($newUserFile, $input);
+        fclose($newUserFile);
     }
 }

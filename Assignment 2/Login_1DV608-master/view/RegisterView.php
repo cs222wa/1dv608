@@ -7,12 +7,12 @@ class RegisterView{
     private static $messageId = 'RegisterView::Message';
     private static $register = 'RegisterView::Register';
     private $message = "";
-    public $userAlreadyExists;
-    public $userNameTooShort;
-    public $passwordTooShort;
-    public $passwordsDoNotMatch;
-    public $usernameInvalidChar;
-    public $registrationSuccess;
+    public $userAlreadyExists = false;
+    public $userNameTooShort= false;
+    public $passwordTooShort = false;
+    public $passwordsDoNotMatch = false;
+    public $usernameInvalidChar = false;
+    public $registrationSuccess = false;
 
 
     public function renderLink(){
@@ -27,7 +27,6 @@ class RegisterView{
 
    //sets message
     public function setMessage() {
-        $message = "";
         if($this->userAlreadyExists){
             $this->message .= 'User already exists.';
         }

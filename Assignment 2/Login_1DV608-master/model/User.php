@@ -23,20 +23,30 @@ class User
             //if username or password doesn't pass validation - return false.
             return false;
         }
-        //Compare the two usernames to see if they match
-        if ($usernameInput == $this->username) {
-            //Compare the two passwords to see if they match
-            if ($passwordInput == $this->password) {
-                //If they are both correct, create a loggedIn sessionvariable.
+        //Compare the username to existing file name to see if they match
+        if(file_exists("data/" . $usernameInput . ".txt")){
+            //if they match - open file
+            $file = fopen("data/" . $usernameInput . ".txt", "r");
+            //if the de-hashed password and user input matches...
+            if(password_verify($passwordInput, fgets($file))){
+                //close the file
+                fclose($file);
+                //set logged in session and return true
                 $_SESSION['loggedIn'] = $this->username;
                 return true;
             }
-            //if password fails, no session variable is created and the method returns false.
+            else{
+                //close the file
+                fclose($file);
+                return false;
+            }
+        }
+        else{
             return false;
         }
-        //if username fails, no session variable is created and the method returns false.
-        return false;
     }
+
+
     //sets message type from the controller to a session variable
     public function setMessage($message){
         $_SESSION['Message'] = $message;
