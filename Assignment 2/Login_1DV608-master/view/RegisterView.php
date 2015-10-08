@@ -85,21 +85,22 @@ class RegisterView{
         //if a username has been posted
         if(isset($_POST[self::$name])){
             $username = $_POST[self::$name];
-            //assert that the input is a string and that its longer than 0 characters
-            assert(is_string($username) && strlen($username) > 0);
             //check for invalid characters - return true if not found, false if found
            if(!preg_match('/[^A-Za-z0-9.#\\-$]/', $username)){
                //check that username contains more than 3 characters
-               if($username > 3){
+               if(strlen($username) > 3 || strlen($username) > 0){
                    //return username to controller
-                   return $_POST[self::$name];
+                   return $username;
                }
                $this->userNameTooShort = true;
+               var_dump("userNameTooShort", $this->userNameTooShort);
                return false;
             }
             $this->usernameInvalidChar = true;
+            var_dump("usernameInvalidChar", $this->usernameInvalidChar);
         }
         $this->userNameTooShort = true;
+        var_dump("userNameTooShort == zero", $this->userNameTooShort);
         return false;
     }
 
@@ -109,23 +110,23 @@ class RegisterView{
         if(isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])){
             $password = $_POST[self::$password];
             $passwordRepeat = $_POST[self::$passwordRepeat];
-            //assert that they both are strings longer than 0 characters
-            assert(is_string($password) && strlen($password) > 0);
-            assert(is_string($passwordRepeat) && strlen($passwordRepeat) > 0);
             //check that both are longer than 6 characters
-            if($password > 6 && $passwordRepeat > 6){
+            if(strlen($password) > 6 || strlen($password) < 0  && strlen($passwordRepeat) > 6 || strlen($passwordRepeat) < 0){
                 //if the passwords match
                 if($password==$passwordRepeat){
                     //return password to controller
                     return $_POST[self::$password];
                 }
                 $this->passwordsDoNotMatch = true;
+                var_dump("passwordsDoNotMatch", $this->passwordsDoNotMatch);
                 return false;
             }
             $this->passwordTooShort = true;
+            var_dump("passwordTooShort", $this->passwordTooShort);
             return false;
         }
         $this->passwordTooShort = true;
+        var_dump("passwordTooShort == zero", $this->passwordTooShort);
         return false;
     }
 }
