@@ -25,14 +25,12 @@ class RegisterController{
                 if($this->regModel->checkIfUserExists($assignedUsername)){
                     //if user already exists - set RegisterView variable accordingly and call setMessage
                     $this->regView->userAlreadyExists = true;
-                    var_dump("userAlreadyExists", $this->regView->userAlreadyExists);
                 }
                 else{
                 //register user
                 $this->regModel->registerUser($assignedUsername, $assignedPassword);
                 //set and return success message to view
                 $this->regView->registrationSuccess = true;
-                var_dump("registrationSuccess", $this->regView->registrationSuccess);
                 }
             }
         }

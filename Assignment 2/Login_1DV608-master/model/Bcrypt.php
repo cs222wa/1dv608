@@ -10,7 +10,7 @@ class Bcrypt {
     }
 
     public function hash($input) {
-        $hash = crypt($input, $this->getSalt());
+        $hash = sha1($input . $this->getSalt());
 
         if(strlen($hash) > 13)
             return $hash;
@@ -19,12 +19,26 @@ class Bcrypt {
     }
 
     public function verify($input, $existingHash) {
-        $hash = crypt($input, $existingHash);
+        $hashed = sha1($input . $this->getSalt());
+        var_dump($existingHash);
+        var_dump($hashed);
+        var_dump($input);
+
+        return $hashed === $existingHash;
+
+        /*$hash = crypt($input, $existingHash);
 
         return $hash === $existingHash;
+        */
     }
 
     private function getSalt() {
+
+        return "$2a$%02d$";
+
+        // TODO Add to settings. (?)
+
+        /*
         $salt = sprintf('$2a$%02d$', $this->rounds);
 
         $bytes = $this->getRandomBytes(16);
@@ -32,6 +46,7 @@ class Bcrypt {
         $salt .= $this->encodeBytes($bytes);
 
         return $salt;
+        */
     }
 
     private $randomState;

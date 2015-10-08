@@ -10,10 +10,11 @@ class LoginController{
     //METHOD RUNS WHEN THE PAGE IS LOADED IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE
     public function doLogin(){
         //send question to view if user is already verified and logged in.
-        if($this->loginView->userIsLoggedIn()){
+        if($this->loginModel->isLoggedIn()){
             //If user is logged in, send question to method in view if the logout button has been clicked
             if($this->loginView->userWantsToLogout()){
-                //If user wants to log out send logout message type from view to session in user
+                $this->loginModel->doLogout();
+                    //If user wants to log out send logout message type from view to session in user
                     $this->loginModel->setMessage( $this->loginView->logoutSuccess());
                     //then log out user.
                     $this->loginView->response();

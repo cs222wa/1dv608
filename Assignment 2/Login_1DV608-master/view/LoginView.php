@@ -10,8 +10,13 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 	private $message;
+	private $user;
 
 
+
+	public function __construct($user){
+		$this->user = $user;
+	}
  	public function renderLink(){
 		return '<a href="?register">Register a new user</a>';
  	}
@@ -26,7 +31,7 @@ class LoginView {
 	public function response() {
 		$message = $this->message;
 		//render different HTML views and messages dependant on users login success
-		if(isset($_SESSION['loggedIn'])){
+		if($this->user->isLoggedIn()){
 			//user passed login
 			$response = $this->generateLogoutButtonHTML($message);
 		}
@@ -36,6 +41,12 @@ class LoginView {
 		}
 		return $response;
 	}
+
+	//returns message to response()
+	public function getMessage($messagetype){
+		return $this->message = $messagetype;
+	}
+
 	//Displays the message Welcome on login
 	public function loginSuccess(){
 		return $this->getMessage('Welcome');
@@ -47,10 +58,7 @@ class LoginView {
 	public function logoutSuccess(){
 		return $this->getMessage('Bye bye!');
 	}
-	//returns message to response()
-	public function getMessage($messagetype){
-		return $this->message = $messagetype;
-	}
+
 	//Checks if user filled out the login form correctly
 	public function checkInput(){
 		if(empty($_POST[self::$name])){
@@ -135,19 +143,11 @@ class LoginView {
 		//if the form is not correctly filled out - return false.
 		return false;
 	}
-	//find out if the user is already logged in.
-	public function userIsLoggedIn(){
-		if(isset($_SESSION['loggedIn'])){
-			return true;
-		}
-		//if user is not logged in return false.
-		return false;
-	}
+
 	//find out if an attempt to log out has been made (if user have clicked the logout button).
 	public function userWantsToLogout(){
 		if (isset($_POST[self::$logout])){
 			//if user clicked the button - unset the login session
-			unset($_SESSION['loggedIn']);
 			return true;
 		}
 		//If login button is not clicked return false.

@@ -45,7 +45,8 @@ class RegisterView{
         if($this->registrationSuccess){
             $this->message = 'User has been registered.';
         }
-        if($this->message = ""){
+
+        if("" == $this->message){
             return true;
         }
         return false;
@@ -93,14 +94,11 @@ class RegisterView{
                    return $username;
                }
                $this->userNameTooShort = true;
-               var_dump("userNameTooShort", $this->userNameTooShort);
                return false;
             }
             $this->usernameInvalidChar = true;
-            var_dump("usernameInvalidChar", $this->usernameInvalidChar);
         }
         $this->userNameTooShort = true;
-        var_dump("userNameTooShort == zero", $this->userNameTooShort);
         return false;
     }
 
@@ -118,15 +116,12 @@ class RegisterView{
                     return $_POST[self::$password];
                 }
                 $this->passwordsDoNotMatch = true;
-                var_dump("passwordsDoNotMatch", $this->passwordsDoNotMatch);
                 return false;
             }
             $this->passwordTooShort = true;
-            var_dump("passwordTooShort", $this->passwordTooShort);
             return false;
         }
         $this->passwordTooShort = true;
-        var_dump("passwordTooShort == zero", $this->passwordTooShort);
         return false;
     }
 }

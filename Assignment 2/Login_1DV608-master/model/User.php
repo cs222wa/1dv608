@@ -2,9 +2,8 @@
 namespace model;
 class User
 {
-    private $username;
-    private $password;
     private $bcrypt;
+    private static $sessionLocation = "modelUserIsLoggedIn";
     //create and assert valid user and login information on creation
     public function __construct()
     {
@@ -26,11 +25,12 @@ class User
             //if they match - open file
             $file = fopen("data/" . $usernameInput . ".txt", "r");
             //if the de-hashed password and user input matches...
-            if($this->bcrypt->verify($passwordInput, fgets($file))){
+            $content = fgets($file);
+            if($this->bcrypt->verify($passwordInput, $content)){
                 //close the file
                 fclose($file);
                 //set logged in session and return true
-                $_SESSION['loggedIn'] = $this->username;
+                $_SESSION[self::$sessionLocation] = $usernameInput;
                 return true;
             }
             else{
@@ -42,6 +42,14 @@ class User
         else{
             return false;
         }
+    }
+
+    public function isLoggedIn(){
+        return isset($_SESSION[self::$sessionLocation]);
+    }
+
+    public function doLogout(){
+        unset($_SESSION[self::$sessionLocation]);
     }
 
 

@@ -20,11 +20,11 @@ ini_set('display_errors', 'On');
 $lc = false;
 
 //CREATE OBJECTS OF THE MODEL
-$u = new \model\User("Admin", "pw");
-$r = new \model\Register("test", "test", "test");
+$u = new \model\User("Admin", "Password");
+$r = new \model\Register();
 
 //CREATE OBJECTS OF THE VIEWS
-$v = new \view\LoginView();
+$v = new \view\LoginView($u);
 $dtv = new \view\DateTimeView();
 $rv = new \view\RegisterView();
 $lv = new \view\LayoutView();
