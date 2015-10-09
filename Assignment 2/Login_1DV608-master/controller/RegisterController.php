@@ -31,7 +31,8 @@ class RegisterController{
                     $this->regModel->registerUser($assignedUsername, $assignedPassword);
                     //set and return success message to view
                     $this->regView->registrationSuccess = true;
-                    //load login-view along with success registration message(already in view as new function?) and new $assignedUsername.
+                    //load login-view.
+
                 }
             }
         }

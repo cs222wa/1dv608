@@ -2,6 +2,7 @@
 namespace model;
 class Register{
     private $bcrypt;
+    private static $sessionLocation = "newUser";
 
     public function __construct(){
         $this->bcrypt = new \Bcrypt();
@@ -23,5 +24,17 @@ class Register{
         //write new file and information to folder
         fwrite($newUserFile, $input);
         fclose($newUserFile);
+        $_SESSION[self::$sessionLocation] = $username;
+    }
+
+    public function unsetSession(){
+        unset($_SESSION[self::$sessionLocation]);
+    }
+
+    public function isNewUser(){
+        return isset($_SESSION[self::$sessionLocation]);
+    }
+    public function getNewUser(){
+        return $_SESSION[self::$sessionLocation];
     }
 }

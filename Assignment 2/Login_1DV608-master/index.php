@@ -30,10 +30,11 @@ $rv = new \view\RegisterView();
 $lv = new \view\LayoutView();
 
 //CREATE OBJECT OF THE CONTROLLER - SEND OBJECTS OF THE CORRESPONDING VIEWS AND MODELS AS PARAMETERS
-$lc = new \controller\LoginController($v, $u);
+$lc = new \controller\LoginController($v, $u, $r);
 $rc = new \controller\RegisterController($rv, $r);
 
 //CALL CONTROLLER METHOD doLogin IN ORDER TO DETERMINE IF USER IS LOGGED IN OR NOT
+$check = $lc->checkRegistration();
 $isLoggedIn = $lc->doLogin();
 
 //PICK WHICH VIEW TO DISPLAY

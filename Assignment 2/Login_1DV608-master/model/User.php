@@ -52,7 +52,6 @@ class User
         unset($_SESSION[self::$sessionLocation]);
     }
 
-
     //sets message type from the controller to a session variable
     public function setMessage($message){
         $_SESSION['Message'] = $message;

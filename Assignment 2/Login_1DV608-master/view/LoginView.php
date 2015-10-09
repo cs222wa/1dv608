@@ -9,6 +9,8 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
+	public $newUser = false;
+	private $newUserName;
 	private $message;
 	private $user;
 
@@ -47,6 +49,12 @@ class LoginView {
 		return $this->message = $messagetype;
 	}
 
+
+	//displays message that user have been registered
+	public function displaySuccessMsg(){
+		return $this->getMessage("User has been registered");
+	}
+
 	//Displays the message Welcome on login
 	public function loginSuccess(){
 		return $this->getMessage('Welcome');
@@ -62,7 +70,7 @@ class LoginView {
 	//Checks if user filled out the login form correctly
 	public function checkInput(){
 		if(empty($_POST[self::$name])){
-			//if form is empty - display error message
+		//if form is empty - display error message
 			return $this->getMessage("Username is missing");
 		}
 		elseif(empty($_POST[self::$password])){
@@ -74,6 +82,13 @@ class LoginView {
 			return false;
 		}
 	}
+
+	public function setUsername($newUsername){
+		$this->newUserName = $newUsername;
+
+		//$this->getRequestUserName($newUsername);
+	}
+
 	/**
 	 * Generate HTML code on the output buffer for the logout button
 	 * @param $message, String output message
@@ -121,7 +136,12 @@ class LoginView {
 			return $_POST[self::$name];
 		}
 		//if username field in the form is empty on submition - display empty form.
-		return "";
+		else if($this->newUser){
+			return $this->newUserName;
+		}
+		else{
+			return "";
+		}
 	}
 	//Finds out if user have clicked the login-button.
 	public function userWantsToLogin(){

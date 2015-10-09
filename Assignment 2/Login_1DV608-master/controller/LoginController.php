@@ -3,10 +3,29 @@ namespace controller;
 class LoginController{
     private $loginView;
     private $loginModel;
-    public function __construct(\view\LoginView $loginView, \model\User $loginModel){
+    private $registerModel;
+
+    public function __construct(\view\LoginView $loginView, \model\User $loginModel, \model\Register $registerModel){
         $this->loginView = $loginView;
         $this->loginModel = $loginModel;
+        $this->registerModel = $registerModel;
     }
+
+    public function checkRegistration(){
+        //check if there is a newly registered member
+        if($this->registerModel->isNewUser()) {
+            //if a new user have been registered
+            $this->loginView->newUser = true;
+            //display success message in view
+            $this->loginView->displaySuccessMsg();
+            //get new user from model
+            $newUsername = $this->registerModel->getNewUser();
+            //set $name variable in view to username stored in session
+            $this->loginView->setUsername($newUsername);
+        }
+    }
+
+
     //METHOD RUNS WHEN THE PAGE IS LOADED IN ORDER TO DETERMINE WHAT NEEDS TO BE DONE
     public function doLogin(){
         //send question to view if user is already verified and logged in.
@@ -26,6 +45,8 @@ class LoginController{
         }
         //IF USER WANTS TO LOGIN INTO THE APPLICATION (BY CLICKING THE LOGIN BUTTON)
         elseif ($this->loginView->userWantsToLogin()){
+            //unset session somewhere else!
+            $this->registerModel->unsetSession();  //(?)
             //check if input is valid
             if($this->loginView->checkInput()){
                 //if input is not valid - call method in view to display appropriate response
