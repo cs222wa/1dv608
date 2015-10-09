@@ -20,17 +20,18 @@ class RegisterController{
             $assignedUsername = $this->regView->getInputUsername();
             $assignedPassword = $this->regView->getInputPassword();
             //if $assignedUsername OR $assignedPassword == false - stop registration!
-            if(!empty($assignedUsername) || !empty($assignedPassword)){
+            if($assignedUsername && $assignedPassword){
                 //check if user already exists
                 if($this->regModel->checkIfUserExists($assignedUsername)){
                     //if user already exists - set RegisterView variable accordingly and call setMessage
                     $this->regView->userAlreadyExists = true;
                 }
                 else{
-                //register user
-                $this->regModel->registerUser($assignedUsername, $assignedPassword);
-                //set and return success message to view
-                $this->regView->registrationSuccess = true;
+                    //register user
+                    $this->regModel->registerUser($assignedUsername, $assignedPassword);
+                    //set and return success message to view
+                    $this->regView->registrationSuccess = true;
+                    //load login-view along with success registration message(already in view as new function?) and new $assignedUsername.
                 }
             }
         }

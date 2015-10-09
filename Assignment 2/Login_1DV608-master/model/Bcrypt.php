@@ -20,16 +20,7 @@ class Bcrypt {
 
     public function verify($input, $existingHash) {
         $hashed = sha1($input . $this->getSalt());
-        var_dump($existingHash);
-        var_dump($hashed);
-        var_dump($input);
-
         return $hashed === $existingHash;
-
-        /*$hash = crypt($input, $existingHash);
-
-        return $hash === $existingHash;
-        */
     }
 
     private function getSalt() {
@@ -38,15 +29,6 @@ class Bcrypt {
 
         // TODO Add to settings. (?)
 
-        /*
-        $salt = sprintf('$2a$%02d$', $this->rounds);
-
-        $bytes = $this->getRandomBytes(16);
-
-        $salt .= $this->encodeBytes($bytes);
-
-        return $salt;
-        */
     }
 
     private $randomState;

@@ -28,7 +28,7 @@ class RegisterView{
    //sets message
     public function setMessage() {
         if($this->userAlreadyExists){
-            $this->message .= 'User already exists.';
+            $this->message .= 'User exists, pick another username.';
         }
         if($this->userNameTooShort){
             $this->message .= 'Username has too few characters, at least 3 characters.';
@@ -61,7 +61,7 @@ class RegisterView{
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" size="20" id="' . self::$name . '" name="' . self::$name . '" value=""/>
+					<input type="text" size="20" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUserName() . '" />
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" size="20" id="' . self::$password . '" name="' . self::$password . '" value=""/>
 					<label for="' . self::$passwordRepeat . '">Repeat Password :</label>
@@ -71,6 +71,15 @@ class RegisterView{
 				</fieldset>
 			</form>
 		';
+    }
+
+    private function getUserName() {
+        //control if the user have entered anything in the username field
+        if(isset($_POST[self::$name])){
+            return strip_tags($_POST[self::$name]);
+        }
+        //if username field in the form is empty on submition - display empty form.
+        return "";
     }
 
     //checks if user has clicked registerbutton
@@ -89,7 +98,7 @@ class RegisterView{
             //check for invalid characters - return true if not found, false if found
            if(!preg_match('/[^A-Za-z0-9.#\\-$]/', $username)){
                //check that username contains more than 3 characters
-               if(strlen($username) > 3 || strlen($username) > 0){
+               if(strlen($username) > 3 && strlen($username) > 0){
                    //return username to controller
                    return $username;
                }
@@ -105,23 +114,29 @@ class RegisterView{
 
     public function getInputPassword(){
         //if two sets of passwords have been posted
-        if(isset($_POST[self::$password]) && isset($_POST[self::$passwordRepeat])){
+        if(!empty($_POST[self::$password]) && !empty($_POST[self::$passwordRepeat])){
             $password = $_POST[self::$password];
             $passwordRepeat = $_POST[self::$passwordRepeat];
             //check that both are longer than 6 characters
-            if(strlen($password) > 6 || strlen($password) < 0  && strlen($passwordRepeat) > 6 || strlen($passwordRepeat) < 0){
+            if(strlen($password) > 6 && strlen($password) > 0  && strlen($passwordRepeat) > 6 && strlen($passwordRepeat) > 0){
                 //if the passwords match
                 if($password==$passwordRepeat){
                     //return password to controller
                     return $_POST[self::$password];
                 }
-                $this->passwordsDoNotMatch = true;
+                else{
+                    $this->passwordsDoNotMatch = true;
+                    return false;
+                }
+            }
+            else{
+                $this->passwordTooShort = true;
                 return false;
             }
+        }
+        else{
             $this->passwordTooShort = true;
             return false;
         }
-        $this->passwordTooShort = true;
-        return false;
     }
 }
