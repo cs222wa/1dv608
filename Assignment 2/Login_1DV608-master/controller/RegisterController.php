@@ -30,7 +30,9 @@ class RegisterController{
                     //register user
                     $this->regModel->registerUser($assignedUsername, $assignedPassword);
                     //load login-view.
-                    header("location:index.php");
+
+                    $loginPage = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+                    header("Location: $loginPage");
                 }
             }
         }
