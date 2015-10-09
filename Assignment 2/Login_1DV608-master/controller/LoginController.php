@@ -45,8 +45,8 @@ class LoginController{
         }
         //IF USER WANTS TO LOGIN INTO THE APPLICATION (BY CLICKING THE LOGIN BUTTON)
         elseif ($this->loginView->userWantsToLogin()){
-            //unset session somewhere else!
-            $this->registerModel->unsetSession();  //(?)
+            //unset registration name session
+            $this->registerModel->unsetSession();
             //check if input is valid
             if($this->loginView->checkInput()){
                 //if input is not valid - call method in view to display appropriate response

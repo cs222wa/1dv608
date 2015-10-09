@@ -12,7 +12,6 @@ class RegisterView{
     public $passwordTooShort = false;
     public $passwordsDoNotMatch = false;
     public $usernameInvalidChar = false;
-    public $registrationSuccess = false;
 
 
     public function renderLink(){
@@ -41,9 +40,6 @@ class RegisterView{
         }
         if($this->passwordsDoNotMatch){
             $this->message .= 'Passwords do not match.';
-        }
-        if($this->registrationSuccess){
-            $this->message = 'User has been registered.';
         }
 
         if("" == $this->message){
@@ -98,7 +94,7 @@ class RegisterView{
             //check for invalid characters - return true if not found, false if found
            if(!preg_match('/[^A-Za-z0-9.#\\-$]/', $username)){
                //check that username contains more than 3 characters
-               if(strlen($username) > 3 && strlen($username) > 0){
+               if(strlen($username) >= 3 && strlen($username) > 0){
                    //return username to controller
                    return $username;
                }
@@ -118,7 +114,7 @@ class RegisterView{
             $password = $_POST[self::$password];
             $passwordRepeat = $_POST[self::$passwordRepeat];
             //check that both are longer than 6 characters
-            if(strlen($password) > 6 && strlen($password) > 0  && strlen($passwordRepeat) > 6 && strlen($passwordRepeat) > 0){
+            if(strlen($password) >= 6 && strlen($password) > 0  && strlen($passwordRepeat) >= 6 && strlen($passwordRepeat) > 0){
                 //if the passwords match
                 if($password==$passwordRepeat){
                     //return password to controller

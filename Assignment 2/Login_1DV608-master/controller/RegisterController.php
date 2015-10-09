@@ -29,10 +29,8 @@ class RegisterController{
                 else{
                     //register user
                     $this->regModel->registerUser($assignedUsername, $assignedPassword);
-                    //set and return success message to view
-                    $this->regView->registrationSuccess = true;
                     //load login-view.
-
+                    header("location:index.php");
                 }
             }
         }

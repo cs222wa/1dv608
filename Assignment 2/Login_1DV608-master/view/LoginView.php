@@ -52,7 +52,7 @@ class LoginView {
 
 	//displays message that user have been registered
 	public function displaySuccessMsg(){
-		return $this->getMessage("User has been registered");
+		return $this->getMessage("Registered new user.");
 	}
 
 	//Displays the message Welcome on login
